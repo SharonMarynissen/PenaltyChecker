@@ -1,5 +1,6 @@
 package domain;
 
+import domain.messages.IncommingMessageDTO;
 import domain.messages.MessageDTO;
 
 /**

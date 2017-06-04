@@ -10,10 +10,10 @@ public class Message{
     private LocalTime timestamp;
     private LincensePlate licensePlate;
 
+    public Message(){ }
+
     public Message(MessageDTO messageDTO){
-        this.cameraId = messageDTO.getCameraId();
-        this.timestamp = messageDTO.getTimestamp();
-        this.licensePlate = messageDTO.getLicensePlate();
+
     }
 
     public int getCameraId()                { return cameraId; }

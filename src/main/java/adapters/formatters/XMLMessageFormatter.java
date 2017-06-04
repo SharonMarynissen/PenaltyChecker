@@ -1,8 +1,8 @@
-package adapters;
+package adapters.formatters;
 
 import domain.CommunicationException;
 import domain.messages.LincensePlate;
-import domain.messages.MessageDTO;
+import domain.messages.IncommingMessageDTO;
 import domain.messages.MessageFormatter;
 import org.apache.log4j.Logger;
 import org.jdom2.Document;
@@ -16,14 +16,14 @@ import java.time.LocalTime;
 
 
 /**
- * A formatter that uses JDOM to transfer an XML string into a {@link MessageDTO}
+ * A formatter that uses JDOM to transfer an XML string into a {@link IncommingMessageDTO}
  */
 public class XMLMessageFormatter implements MessageFormatter {
     private Logger logger = Logger.getLogger(XMLMessageFormatter.class);
 
     @Override
-    public MessageDTO format(String messageString) throws CommunicationException {
-        MessageDTO out = new MessageDTO();
+    public IncommingMessageDTO format(String messageString) throws CommunicationException {
+        IncommingMessageDTO out = new IncommingMessageDTO();
 
         try {
             SAXBuilder sb = new SAXBuilder();
@@ -34,9 +34,9 @@ public class XMLMessageFormatter implements MessageFormatter {
             out.setTimestamp(LocalTime.parse(rootElement.getChildText("timestamp")));
             out.setLicensePlate(new LincensePlate(rootElement.getChildText("license-plate")));
 
-            logger.info("Tranformed XML string to MessageDTO: '" + out.toString() + "'");
+            logger.info("Tranformed XML string to IncommingMessageDTO: '" + out.toString() + "'");
         } catch (JDOMException | IOException e) {
-            throw new CommunicationException("Error during conversion to DTO", e);
+            throw new CommunicationException("Error during conversion to IncommingMessageDTO", e);
         }
 
         return out;

@@ -54,8 +54,8 @@ public class RabbitMQ implements InputService {
                     logger.debug("Message content: " + content);
                     if(listener != null){
                         try {
-                            listener.onReceive(formatter.format(content));
                             logger.info("Delivered message to listener");
+                            listener.onReceive(formatter.format(content));
                         } catch (Exception e){
                             logger.error("Exception during callback to listener", e);
                         }
@@ -73,7 +73,7 @@ public class RabbitMQ implements InputService {
     @Override
     public void shutdown() throws CommunicationException {
         try {
-            channel.close();;
+            channel.close();
             connection.close();
         } catch (Exception e){
             throw new CommunicationException("Unable to close connection to RabbitMQ", e);

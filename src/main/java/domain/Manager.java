@@ -1,12 +1,8 @@
 package domain;
 
-import adapters.CameraService;
-import domain.messages.Message;
+import domain.messages.IncommingMessageDTO;
 import domain.messages.MessageDTO;
 import org.apache.log4j.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Sharon on 3/06/2017.
@@ -14,7 +10,7 @@ import java.util.List;
 public class Manager implements InputListener {
     private InputService inputService;
     private Logger logger = Logger.getLogger(Manager.class);
-    private final List<OutputService> outputServices = new ArrayList<>();
+    private OutputService outputService;
 
     public Manager(InputService inputService){
         this.inputService = inputService;
@@ -39,22 +35,18 @@ public class Manager implements InputListener {
     @Override
     public void onReceive(MessageDTO messageDTO) {
         logger.info("Received message from InputService");
-        Message message = new Message(messageDTO);
 
-        for(OutputService out : outputServices){
-            if (out.equals(CameraService.class))
-                logger.info("true");
-
+        if(outputService != null){
+            try {
+               outputService.sendMessage(messageDTO);
+            } catch (CommunicationException e) {
+               logger.error("Unable to send message to OutputService", e);
+            }
         }
 
     }
 
-    public void addOutputService(OutputService outputService){
-        outputServices.add(outputService);
+    public void setOutputService(OutputService outputService) {
+        this.outputService = outputService;
     }
-
-    public void removeOutputService(OutputService outputService){
-        outputServices.remove(outputService);
-    }
-
 }
